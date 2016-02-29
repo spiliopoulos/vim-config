@@ -131,6 +131,9 @@ endfunction
 " Disable K for manpages - not used often and easy to accidentally hit
 noremap K k
 
+" Enable mouse and touchpad scroll
+" set mouse=a
+
 " Resize window splits
 " TODO Fix mousewheel
 nnoremap <Up>    3<C-w>-
