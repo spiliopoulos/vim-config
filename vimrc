@@ -1,11 +1,84 @@
 """""""""""""""""""""""""
 " Basic features
 """""""""""""""""""""""""
-let pathogen_disabled = []
-if !has('gui_running')
-  call add(g:pathogen_disabled, 'css-color')
-endif
-call pathogen#infect()
+"let pathogen_disabled = []
+"if !has('gui_running')
+"  call add(g:pathogen_disabled, 'css-color')
+"endif
+"call pathogen#infect()
+
+set nocompatible              " be iMproved, required
+filetype off                  " required
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-abolish.git'
+Plugin 'mileszs/ack.vim.git'
+Plugin 'MarcWeber/vim-addon-mw-utils.git'
+Plugin 'nviennot/vim-armasm.git'
+Plugin 'ton/vim-bufsurf.git'
+Plugin 'kchmck/vim-coffee-script.git'
+"Plugin 'hail2u/vim-css3-syntax.git'
+"Plugin 'skammer/vim-css-color.git'
+Plugin 'kien/ctrlp.vim.git'
+Plugin 'tpope/vim-cucumber.git'
+Plugin 'tpope/vim-endwise.git'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'vim-scripts/Gist.vim.git'
+Plugin 'sjl/gundo.vim.git'
+Plugin 'tpope/vim-haml.git'
+Plugin 'vim-scripts/L9.git'
+Plugin 'groenewege/vim-less.git'
+Plugin 'plasticboy/vim-markdown.git'
+Plugin 'vim-scripts/matchit.zip.git'
+Plugin 'fholgado/minibufexpl.vim.git'
+Plugin 'nviennot/molokai.git'
+Plugin 'scrooloose/nerdcommenter.git'
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'nviennot/vim-powerline.git'
+Plugin 'tomtom/quickfixsigns_vim.git'
+Plugin 'tpope/vim-rails.git'
+Plugin 'tpope/vim-repeat.git'
+Plugin 'vim-ruby/vim-ruby.git'
+Plugin 'sidnair/scala-vim.git'
+Plugin 'ervandew/screen.git'
+Plugin 'slim-template/vim-slim.git'
+Plugin 'nviennot/snipmate.vim.git'
+Plugin 'tpope/vim-speeddating.git'
+Plugin 'ervandew/supertab.git'
+Plugin 'tpope/vim-surround.git'
+Plugin 'scrooloose/syntastic.git'
+Plugin 'godlygeek/tabular'
+Plugin 'majutsushi/tagbar.git'
+Plugin 'tomtom/tlib_vim.git'
+Plugin 'tpope/vim-unimpaired.git'
+Plugin 'mattn/webapi-vim.git'
+Plugin 'sukima/xmledit.git'
+Plugin 'vim-scripts/YankRing.vim.git'
+Plugin 'Valloric/YouCompleteMe'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
 
 " Display options
 syntax on
@@ -193,6 +266,7 @@ let g:syntastic_enable_signs=1
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': [],
                            \ 'passive_filetypes': ['c', 'scss', 'html', 'scala'] }
+let g:syntastic_ocaml_checkers = ['merlin']
 
 let g:quickfixsigns_classes=['qfl', 'vcsdiff', 'breakpoints']
 
@@ -259,3 +333,9 @@ end
 so ~/.vim/vimrc.mine
 
 " TODO raise contrast for comments
+
+let g:ycm_python_binary_path = 'python'
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute "set rtp+=" . g:opamshare . "/ocp-indent/vim/indent/ocaml.vim"
