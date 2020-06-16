@@ -1,6 +1,6 @@
 syn match ErrorTailSpace /\s\+$/
-match Error80 /\%>80v.\+/
-set textwidth=78
+match Error80 /\%>100v.\+/
+set textwidth=100
 set nofoldenable
 set foldmethod=syntax
 

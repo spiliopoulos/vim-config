@@ -8,6 +8,8 @@
 "call pathogen#infect()
 
 set nocompatible              " be iMproved, required
+set ttyfast
+" set lazyredraw
 filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -19,49 +21,74 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-abolish.git'
-Plugin 'mileszs/ack.vim.git'
+"Plugin 'mileszs/ack.vim.git'
 Plugin 'MarcWeber/vim-addon-mw-utils.git'
-Plugin 'nviennot/vim-armasm.git'
-Plugin 'ton/vim-bufsurf.git'
-Plugin 'kchmck/vim-coffee-script.git'
+"Plugin 'nviennot/vim-armasm.git'
+"Plugin 'ton/vim-bufsurf.git'
+"Plugin 'kchmck/vim-coffee-script.git'
 "Plugin 'hail2u/vim-css3-syntax.git'
 "Plugin 'skammer/vim-css-color.git'
-Plugin 'kien/ctrlp.vim.git'
-Plugin 'tpope/vim-cucumber.git'
+"Plugin 'kien/ctrlp.vim.git'
+"Plugin 'tpope/vim-cucumber.git'
 Plugin 'tpope/vim-endwise.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'vim-scripts/Gist.vim.git'
 Plugin 'sjl/gundo.vim.git'
-Plugin 'tpope/vim-haml.git'
+"Plugin 'tpope/vim-haml.git'
 Plugin 'vim-scripts/L9.git'
-Plugin 'groenewege/vim-less.git'
+"Plugin 'groenewege/vim-less.git'
+Plugin 'godlygeek/tabular' " Dependency for vim-markdown
 Plugin 'plasticboy/vim-markdown.git'
 Plugin 'vim-scripts/matchit.zip.git'
 Plugin 'fholgado/minibufexpl.vim.git'
 Plugin 'nviennot/molokai.git'
 Plugin 'scrooloose/nerdcommenter.git'
 Plugin 'scrooloose/nerdtree.git'
-Plugin 'nviennot/vim-powerline.git'
-Plugin 'tomtom/quickfixsigns_vim.git'
-Plugin 'tpope/vim-rails.git'
-Plugin 'tpope/vim-repeat.git'
-Plugin 'vim-ruby/vim-ruby.git'
+"Plugin 'nviennot/vim-powerline.git'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'tomtom/quickfixsigns_vim.git'
+" Plugin 'tpope/vim-rails.git'
+" Plugin 'tpope/vim-repeat.git'
+" Plugin 'vim-ruby/vim-ruby.git'
 Plugin 'sidnair/scala-vim.git'
 Plugin 'ervandew/screen.git'
-Plugin 'slim-template/vim-slim.git'
-Plugin 'nviennot/snipmate.vim.git'
+" Plugin 'slim-template/vim-slim.git'
+"Plugin 'nviennot/snipmate.vim.git'
 Plugin 'tpope/vim-speeddating.git'
 Plugin 'ervandew/supertab.git'
-Plugin 'tpope/vim-surround.git'
-Plugin 'scrooloose/syntastic.git'
-Plugin 'godlygeek/tabular'
-Plugin 'majutsushi/tagbar.git'
+Plugin 'tpope/vim-surround.git' " select in visual mode then S followed by the token to use to surround
+"Plugin 'scrooloose/syntastic.git'
+Plugin 'w0rp/ale'
+Plugin 'majutsushi/tagbar.git' " ,t will open a sidebar with all ctags for this file
 Plugin 'tomtom/tlib_vim.git'
 Plugin 'tpope/vim-unimpaired.git'
-Plugin 'mattn/webapi-vim.git'
+" Plugin 'mattn/webapi-vim.git'
 Plugin 'sukima/xmledit.git'
 Plugin 'vim-scripts/YankRing.vim.git'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips.git'
+
+" See https://github.com/tmux-plugins/vim-tmux-focus-events
+Plugin 'tmux-plugins/vim-tmux-focus-events'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" Support for :line-number:column-number specifications in file_paths
+Plugin 'kopischke/vim-fetch'
+
+" Display indent guides
+Plugin 'Yggdroot/indentLine'
+
+Plugin 'junegunn/fzf' " Adds :FZF for fuzzy file title search
+
+" js syntax
+Plugin 'jelera/vim-javascript-syntax'
+
+" ts syntax
+Plugin 'leafgarland/typescript-vim'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -79,10 +106,36 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<C-J>"
+let g:UltiSnipsJumpForwardTrigger="<C-J>"
+let g:UltiSnipsJumpBackwardTrigger="<C-K>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" Ale linter specific config
+nmap <silent> <C-k> <Plug>
+nmap <silent> <C-j> <Plug>
+let g:ale_completion_enabled = 1
+let g:ale_linters = {
+\   'python': ['pylint'],
+\}
+let g:airline#extensions#ale#enabled = 1
+let g:ale_fixers = {
+\   'python': [
+\     'isort',
+\     'yapf',
+\     'remove_trailing_lines',
+\     'trim_whitespace'
+\  ],
+\}
+
+
 
 " Display options
 syntax on
-set cursorline
+" set cursorline makes things slow
 set number
 set list!                       " Display unprintable characters
 set listchars=tab:▸\ ,trail:•,extends:»,precedes:«
@@ -118,7 +171,7 @@ set smarttab                    " Make <tab> and <backspace> smarter
 set expandtab
 set tabstop=2
 set shiftwidth=2
-set textwidth=80
+set textwidth=100
 set formatoptions-=t formatoptions+=croql
 
 " viminfo: remember certain things when we exit
@@ -162,6 +215,7 @@ autocmd BufReadPost *
     \ if line("'\"") > 0 && line ("'\"") <= line("$") |
     \     exe "normal g'\"zz" |
     \ endif |
+
 
 
 " After 4s of inactivity, check for external file modifications on next keyrpress
@@ -226,6 +280,7 @@ cmap w!! w !sudo tee % >/dev/null
 """""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""
+nnoremap <leader>jd :YcmCompleter 
 nnoremap <Leader>b :BufSurfBack<cr>
 nnoremap <Leader>f :BufSurfForward<cr>
 
@@ -267,11 +322,13 @@ let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': [],
                            \ 'passive_filetypes': ['c', 'scss', 'html', 'scala'] }
 let g:syntastic_ocaml_checkers = ['merlin']
+let g:syntastic_python_checkers = ['pylint3']
 
 let g:quickfixsigns_classes=['qfl', 'vcsdiff', 'breakpoints']
 
 let g:Powerline_symbols = 'unicode'
 set laststatus=2
+let g:airline_powerline_fonts = 1
 
 let g:ctrlp_map = '<Leader>.'
 let g:ctrlp_custom_ignore = '/\.\|\.o\|\.so'
@@ -334,8 +391,14 @@ so ~/.vim/vimrc.mine
 
 " TODO raise contrast for comments
 
-let g:ycm_python_binary_path = 'python'
+" Let youcomplete know which python interpreter to use
+let g:ycm_python_binary_path = '/Users/yannisspiliopoulos/.pyenv/versions/3.4.8/bin/python'
 
 let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
 execute "set rtp+=" . g:opamshare . "/merlin/vim"
 execute "set rtp+=" . g:opamshare . "/ocp-indent/vim/indent/ocaml.vim"
+
+""""""""""""""""""""""""
+" NerdCommenter
+""""""""""""""""""""""""
+let g:NERDCustomDelimiters = { 'javascript': {'nestedAlt': 0, 'nested': 0, 'right': '', 'rightAlt': '*/', 'leftAlt': '/**', 'left': '//'} }
